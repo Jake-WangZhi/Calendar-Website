@@ -1,0 +1,99 @@
+﻿<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-default">
+     	<div class="container-fluid">
+        <ul class="nav navbar-nav">
+          <li><a href="/"><b>Home</b></a></li>
+          <li><a href="/events"><b>Events</b></a></li>
+          <li><a href="/addEvent"><b>Add Event</b></a></li>
+          <li><a href="/stock"><b>Stock Page</b></a></li>
+          <li><a href="/admin"><b>Admin</b></a></li>
+          <li><a href="/logout" class="f90-logout-button"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a><li>
+        </ul>
+        <p id="userName" style="color:black;text-align:right">Welcome</p>
+    	</div>
+  	</nav>
+    <br><br>
+
+    <div class="container">
+      <table class="table" id="eventsTable">
+        <thead>
+          <tr>
+            <th scope="col">Day</th>
+            <th scope="col">Event</th>
+            <th scope="col">Time</th>
+            <th scope="col">Event Location <br> (Virtual or Physical) </th>
+            <th scope="col">Phone Number</th>
+            <th scope="col">Extra Info <br> (URL) </th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <script type="text/javascript">
+		   $(function() {
+	    $.get("userLogin").done(function(response) {
+        document.getElementById("userName").innerHTML = "Welcome " + response.login + "!";
+      });
+    });  
+     // TODO: Use AJAX to Fetch events.json data from the server and display it in the events Table
+	 //Note - this is an outline of ONE potential solution
+	 //using JavaScript (not jquery) - but you are free to use jquery
+	 //or any solution that YOU create that works! 
+	 //define AJAX GET request to endpoint in sever
+	 //getEvents (which you need to add to createServer.js) and process JSON string obtained 
+	 //from server - contains a stringified version of events.json
+	 //
+	 //OUTLINE:
+	 function processEventsJson(){
+		var xmlhttp = new XMLHttpRequest();
+		var url = "getListOfEvents"; //you need to add getEvents url to the server (createServer.js)
+		                       //and the code to return contents of events.json
+							   //when getEvents is requested!!
+		xmlhttp.onreadystatechange = function() {
+			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+				console.log(xmlhttp.responseText);  // log server response to console
+				var obj = JSON.parse(xmlhttp.responseText);
+				var eventsArray = obj.events; // get the array of events objects
+				createNdisplayEvents(eventsArray);
+			}
+		}
+		
+		xmlhttp.open("GET",url,true);
+		xmlhttp.send();
+	 }
+	 
+	 // This function loops through the array and builds a big string 
+	 // embedding the information in the contacts array into rows in a table using
+	 // the html tr and td, and then appends the string to the table body
+	 function createNdisplayEvents(cArray) {
+	   // Outline
+	   // initialize string you will append to the table body
+	   var outstring = '';
+	   // loop through string
+	   var i;
+	   for (i=0; i<cArray.length; i++) {
+	   	outstring += '<tr>'+ '<td>'+cArray[i].day+'</td>'+'<td>'+cArray[i].event+'</td>'+'<td>'+cArray[i].start+' - '+cArray[i].end+'</td>'+'<td>'+cArray[i].location+'</td>'+'<td>'+cArray[i].phone+'</td>'+'<td>'+'<a href="' + cArray[i].url + '">'+cArray[i].info+'</a>'+'</td>' +'</tr>';	
+	   }
+	   var newTable = document.getElementsByTagName("tbody")[0].innerHTML+outstring;
+	   document.getElementsByTagName("tbody")[0].innerHTML=newTable;
+
+	   //		table row with data elements from JSON array
+	   //       embedded with table data elements. The info for
+	   //       each element is in cArray[rowindex]
+	   // } // end loop
+	   // append output string to table body
+	   // hint, Document.getElementsbyTagName to obtain the table body
+	   // and then set innerHTML of table body DOM object the output string outstring
+	  }
+	  window.onload = processEventsJson();
+    </script>
+  </body>
+</html>

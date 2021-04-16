@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    	<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+	    <title>Welcome to Node.js</title>
+	    <style type="text/css">
+              .jumbotron { text-align: center; }
+            </style>
+  </head>
+
+  <body>
+   	<div class="jumbotron" style="background: DarkSeaGreen !important">
+        <h1>Login Page</h1>
+        <p>Please enter your user name and password. BOth are case sensitive</p>
+
+        <br/>
+        <br/>
+
+      </div>
+
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+		   <p id="wrong" style="color:red;"></p>
+           <form id="myForm"name="myForm">
+			   <div>
+				   <label for="login">User:</label>
+				   </br>
+				   <input type="text"id="login"name="login" style="width:100%;" placeholder="Username">
+			   </div>
+			   <div>
+				   <label for="password">Password:</label>
+				   </br>
+				   <input type="password"id="password"name="password" style="width:100%;" placeholder="Password">
+			  </div>
+			  </br>
+			  <input type="button" id="a" value="Log in" class="btn btn-primary btn-block"></form>
+        </div>
+        <div class="col-md-1"></div>
+      </div>
+      <script> 
+       $(document).ready(function(){
+		   $('#a').click(function(event){
+			   event.preventDefault();
+			   let login=$('#login').val();
+			   let password=$('#password').val();
+			   $.post('sendLoginDetails',
+			        {"login":login,"password":password},
+			        (data)=>{
+						console.log(data);
+						if(data.status==='success'){
+							window.location.href='events';
+						}else{
+                             document.getElementById("wrong").innerHTML = "lnvalid credentials. Please try again!";
+						}
+					});
+				});
+		 }); 
+    </script>
+  </body>
+</html>
+
