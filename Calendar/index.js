@@ -375,7 +375,54 @@ app.get('*', function(req, res) {
 });
 
 
+/*
+var con = mysql.createConnection({
+  host: "cse-larry.cse.umn.edu",
+  user: "C4131F20U110", // replace with the database user provided to you
+  password: "12130", // replace with the database password provided to you
+  database: "C4131F20U110", // replace with the database user provided to you
+  port: 3306
+});
 
+con.connect(function(err) {  
+	if (err) {    
+		throw err;  
+	};  
+ console.log("Connected to MYSQL database!");
+ });
+ */
+ /*
+ var con = mysql.createPool({
+  connectionLimit : 100,
+  host: "us-cdbr-east-02.cleardb.com",
+  user: "b3c5c03ac254f3", // replace with the database user provided to you
+  password: "f578b9da", // replace with the database password provided to you
+  database: "heroku_e376f198e71b37d", // replace with the database user provided to you
+  port: 3306
+});
+
+module.exports = con;
+
+
+exports.executeQuery=function(query,callback){
+    pool.getConnection(function(err,connection){
+        if (err) {
+          connection.release();
+          throw err;
+        }   
+        connection.query(query,function(err,rows){
+            connection.release();
+            if(!err) {
+                callback(null, {rows: rows});
+            }           
+        });
+        connection.on('error', function(err) {      
+              throw err;
+              return;     
+        });
+    });
+}
+ */
 
 
 
